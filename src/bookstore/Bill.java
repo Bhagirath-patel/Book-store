@@ -15,7 +15,4 @@ public class Bill {
     int stock;
     int total_amount;
     
-    // Print 
-    // Add book
-    // calculate the total amount
 }
