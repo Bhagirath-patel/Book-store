@@ -1,15 +1,14 @@
 package bookstore;
 
-import java.lang.*;
 import java.util.*;
 
 /**
  *
  * @author bhagirath
  */
-
 public class Bookstore {
 
+    Scanner sc = new Scanner(System.in);
     Book books[] = new Book[1000];
     Bill bills[] = new Bill[1000];
     int bill_position = 0;
@@ -18,115 +17,109 @@ public class Bookstore {
     /**
      * @param args the command line arguments
      */
-    void addBook() {
-        // String name, 
-        // int price, stock
-        Book b = new Book();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter Book Name");
-        b.name = sc.next();
-        System.out.println("Enter Price");
-        b.price = sc.nextInt();
-        System.out.println("Enter stock of book");
-        b.stock = sc.nextInt();
+    Book checkBook(String name) {
+
         for (int i = 0; i < position; i++) {
-            if (b.name.equals(books[i].name)) {
-                System.out.println("This book is already available . Try again");
-                return;
+            if (name.equals(books[i].name)) {
+                return books[i];
             }
         }
-        books[position] = b;
+        return null;
+    }
+
+    Book getBook() {
+
+        System.out.println("Enter Book Name");
+        String name = sc.next();
+        Book b1 = checkBook(name);
+
+        if (b1 == null) {
+            System.out.println("Enter Price");
+        }
+        int price = sc.nextInt();
+        System.out.println("Enter stock of book");
+        int stock = sc.nextInt();
+
+        return new Book(name, price, stock);
+
+    }
+
+    void addBook(Book bl) {
+
+        books[position] = bl;
         position++;
+
     }
 
     void print() {
         for (int i = 0; i < position; i++) {
             books[i].print();
         }
-
     }
 
     void billPrint() {
         for (int i = 0; i < bill_position; i++) {
-            System.out.println("Custmer Name :" + bills[i].cusName);
-            System.out.println("Book Name " + bills[i].name);
-            System.out.println("Stock of Book :" + bills[i].stock);
-            System.out.println("Total Amount :" + bills[i].total_amount);
-
+            bills[i].billPrint();
         }
-
     }
+// Stock of book
 
     void stock() {
-        Book b = new Book();
-        Scanner sc = new Scanner(System.in);
+
         System.out.println("Enter Book Name");
-        b.name = sc.next();
-        for (int i = 0; i < position; i++) {
-            if (b.name.equals(books[i].name)) {
-                System.out.println("Total stock of book :" + books[i].stock);
-                return;
-            }
+        String name = sc.next();
+
+        Book b = checkBook(name);
+        if (!(b == null)) {
+            System.out.println("Total stock of book :" + b.stock);
         }
-        System.out.println("This book is not available . Try again");
-
     }
+    //       End Stock Function 
 
-    // Create Bill
-    void bill() {
-        Bill bl = new Bill();
-        Scanner sc = new Scanner(System.in);
+    Bill getBill() {
+
         System.out.println("Enter custmer Name");
-        bl.cusName = sc.next();
-        bl.name = "";
-        bl.stock = 0;
-        bl.total_amount = 0;
-        int ch = 0;
-        boolean x = true;
-        while (x) {
-
+        String cusName = sc.next();
+        String bookName[] = new String[100];
+        int stock = 0;
+        int totalAmount = 0;
+        int ch;
+        int book_position = 0;
+        boolean continueInput = true;
+        while (continueInput) {
             System.out.println("Enter Book Name");
             String name = sc.next();
             System.out.println("Enter number of Book");
             int numBook = sc.nextInt();
-
-            for (int i = 0; i < position; i++) {
-                if (name.equals(books[i].name) && numBook <= books[i].stock) {
-                    if (bl.name.length() > 0) {
-                        bl.name = bl.name + "," + name;
-                    } else {
-                        bl.name = name;
-                    }
-                    bl.total_amount += numBook * books[i].price;
-
-                    bl.stock += numBook;
-
-                    books[i].stock -= numBook;
-
-                    System.out.println("Enter 0 to exit and any other to add more book");
-
-                    ch = sc.nextInt();
-                    if (ch == 0) {
-                        bills[bill_position] = bl;
-                        bill_position++;
-                        return;
-                    }
+            Book b = checkBook(name);
+            if (!(b == null) && numBook <= b.stock) {
+                bookName[book_position] = name;
+                book_position++;
+                stock += numBook;
+                totalAmount += numBook * b.price;
+                b.stock -= numBook;
+                System.out.println("Enter 0 to exit and any other to add more book");
+                ch = sc.nextInt();
+                if (ch == 0) {
+                    return new Bill(cusName, bookName , stock, totalAmount);
                 }
-                if (ch != 0) {
-                    continue;
-                }
+            } else {
                 System.out.println("Book not available");
                 System.out.println("Enter 0 to exit and any other to add more book");
 
                 ch = sc.nextInt();
                 if (ch == 0) {
-                    return;
+                    return new Bill(cusName, bookName, stock, totalAmount);
                 }
-
             }
-
         }
+        return null;
+    }
 
+    //       Create Bill
+    void bill(Bill bl) {
+        bills[bill_position] = bl;
+        bill_position++;
     }
 
     // End Bill Block
@@ -134,7 +127,6 @@ public class Bookstore {
         // TODO code application logic here
         Bookstore bs = new Bookstore();
         Scanner sc = new Scanner(System.in);
-        String name;
         boolean x = true;
         while (x) {
             System.out.println("0. Exit");
@@ -145,15 +137,17 @@ public class Bookstore {
             System.out.println("5. Print all bill");
             System.out.println("Enter Choice");
             int ch = sc.nextInt();
-
             switch (ch) {
                 case 0: {
                     x = false;
                     break;
                 }
                 case 1: {
-                    bs.addBook();
-                    System.out.println("Successfully Added");
+                    Book b1 = bs.getBook();
+                    if (b1 != null) {
+                        bs.addBook(b1);
+                        System.out.println("Successfully Added");
+                    }
                     break;
                 }
                 case 2: {
@@ -161,9 +155,9 @@ public class Bookstore {
                     break;
                 }
                 case 3: {
-                    bs.bill();
+                    Bill bl = bs.getBill();
+                    bs.bill(bl);
                     break;
-
                 }
                 case 4: {
                     bs.stock();
@@ -175,12 +169,8 @@ public class Bookstore {
                 }
                 default: {
                     System.out.println("4. Print b/w 0 to 5");
-
                 }
-
             }
-
         }
-
     }
 }

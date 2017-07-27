@@ -15,11 +15,17 @@ public class Book {
     int stock;
     
     // Print
+   
+   Book(String name  , int price , int stock){
+       this.name = name;
+       this.price = price;
+       this.stock = stock;   
+   }
     void print()
     {
         System.out.println("Book Name :"+ this.name
-                + " Price of book  "+ this.price
-                + "Stock of Book :"+ this.stock);
+                + "  "+" Price of book : "+ this.price
+                + "  "+" Stock of Book :"+ this.stock);
 
-    }
+    }  
 }
