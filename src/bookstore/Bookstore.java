@@ -17,7 +17,7 @@ public class Bookstore {
     /**
      * @param args the command line arguments
      */
-    Book checkBook(String name) {
+    Book checkBookName(String name) {
 
         for (int i = 0; i < position; i++) {
             if (name.equals(books[i].name)) {
@@ -31,7 +31,7 @@ public class Bookstore {
 
         System.out.println("Enter Book Name");
         String name = sc.next();
-        Book b1 = checkBook(name);
+        Book b1 = checkBookName(name);
 
         if (b1 == null) {
             System.out.println("Enter Price");
@@ -69,7 +69,7 @@ public class Bookstore {
         System.out.println("Enter Book Name");
         String name = sc.next();
 
-        Book b = checkBook(name);
+        Book b = checkBookName(name);
         if (!(b == null)) {
             System.out.println("Total stock of book :" + b.stock);
         }
@@ -91,7 +91,7 @@ public class Bookstore {
             String name = sc.next();
             System.out.println("Enter number of Book");
             int numBook = sc.nextInt();
-            Book b = checkBook(name);
+            Book b = checkBookName(name);
             if (!(b == null) && numBook <= b.stock) {
                 bookName[book_position] = name;
                 book_position++;
@@ -101,7 +101,7 @@ public class Bookstore {
                 System.out.println("Enter 0 to exit and any other to add more book");
                 ch = sc.nextInt();
                 if (ch == 0) {
-                    return new Bill(cusName, bookName , stock, totalAmount);
+                    return new Bill(cusName, bookName, stock, totalAmount);
                 }
             } else {
                 System.out.println("Book not available");
@@ -156,7 +156,9 @@ public class Bookstore {
                 }
                 case 3: {
                     Bill bl = bs.getBill();
-                    bs.bill(bl);
+                    if (bl != null) {
+                        bs.bill(bl);
+                    }
                     break;
                 }
                 case 4: {
