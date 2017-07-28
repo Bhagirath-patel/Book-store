@@ -12,11 +12,11 @@ package bookstore;
 public class Bill {
 
         String cusName;
-        String bookName[] = new String[100];
+        Book bookName[] = new Book[100];
         int stock;
         int totalAmount;
 
-    Bill(String cusName, String bookName[] , int stock , int totalAmount) {
+    Bill(String cusName, Book bookName[] , int stock , int totalAmount) {
         this.cusName = cusName;
         this.bookName = bookName;
         this.stock = stock;
@@ -27,7 +27,7 @@ public class Bill {
         System.out.println("Custmer Name :" + this.cusName);
         System.out.print(" Custmer Name :");
                for(int i = 0 ; bookName[i] !=null ; i++){
-                System.out.print(this.bookName[i]+",");
+                System.out.print(this.bookName[i].name+",");
               }
         System.out.println(" Stock of Book : " + this.stock);
         System.out.println(" Total Amount :" + this.totalAmount);

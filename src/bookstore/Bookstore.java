@@ -35,13 +35,17 @@ public class Bookstore {
 
         if (b1 == null) {
             System.out.println("Enter Price");
-        }
+        
         int price = sc.nextInt();
         System.out.println("Enter stock of book");
         int stock = sc.nextInt();
 
         return new Book(name, price, stock);
-
+        }
+        else{
+           System.out.println("Book Allready Available"); 
+           return null;
+        }
     }
 
     void addBook(Book bl) {
@@ -80,7 +84,7 @@ public class Bookstore {
 
         System.out.println("Enter custmer Name");
         String cusName = sc.next();
-        String bookName[] = new String[100];
+        Book bookName[] = new Book[100];
         int stock = 0;
         int totalAmount = 0;
         int ch;
@@ -93,7 +97,7 @@ public class Bookstore {
             int numBook = sc.nextInt();
             Book b = checkBookName(name);
             if (!(b == null) && numBook <= b.stock) {
-                bookName[book_position] = name;
+                bookName[book_position] = b;
                 book_position++;
                 stock += numBook;
                 totalAmount += numBook * b.price;
